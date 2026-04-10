@@ -51,16 +51,16 @@ local-ownership-set: ## sets recursively local root directory ownership
 	$(SUDO) chown -R ${user}:${group} $(ROOT_DIR)/
 
 services-set: ## sets all container services
-	$(MAKE) apirest-set mailer-set db-set broker-set
+	$(MAKE) apirest-set db-set mailer-set broker-set
 
 services-create: ## builds and starts up all container services
-	$(MAKE) apirest-create mailer-create db-create broker-create
+	$(MAKE) apirest-create db-create mailer-create broker-create
 
 services-info: ## shows all container services information
-	$(MAKE) apirest-info mailer-info db-info broker-info
+	$(MAKE) apirest-info db-info mailer-info broker-info
 
 services-destroy: ## destroys all container services
-	$(MAKE) apirest-destroy mailer-destroy db-destroy broker-destroy
+	$(MAKE) apirest-destroy db-destroy mailer-destroy broker-destroy
 
 # -------------------------------------------------------------------------------------------------
 #  Backend API Service
