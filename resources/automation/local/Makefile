@@ -36,7 +36,7 @@ help: ## shows this Makefile help message
 # -------------------------------------------------------------------------------------------------
 #  System
 # -------------------------------------------------------------------------------------------------
-.PHONY: local-info local-ownership local-ownership-set services-set services-create services-info services-destroy
+.PHONY: local-info local-ownership local-ownership-set
 
 local_ip ?= $(word 1,$(shell hostname -I))
 local-info: ## shows local machine ip and container ports set
@@ -50,6 +50,11 @@ local-ownership: ## shows local ownership
 local-ownership-set: ## sets recursively local root directory ownership
 	$(SUDO) chown -R ${user}:${group} $(ROOT_DIR)/
 
+# -------------------------------------------------------------------------------------------------
+#  Services Full Control
+# -------------------------------------------------------------------------------------------------
+.PHONY: services-set services-create services-info services-start services-restart services-stop services-destroy
+
 services-set: ## sets all container services
 	$(MAKE) apirest-set db-set mailer-set broker-set
 
@@ -58,6 +63,15 @@ services-create: ## builds and starts up all container services
 
 services-info: ## shows all container services information
 	$(MAKE) apirest-info db-info mailer-info broker-info
+
+services-start: ## starts all container services
+	$(MAKE) apirest-start db-start mailer-start broker-start
+
+services-restart: ## restarts all container services
+	$(MAKE) apirest-restart db-restart mailer-restart broker-restart
+
+services-stop: ## stops all container services
+	$(MAKE) apirest-stop db-stop mailer-stop broker-stop
 
 services-destroy: ## destroys all container services
 	$(MAKE) apirest-destroy db-destroy mailer-destroy broker-destroy
@@ -79,9 +93,13 @@ apirest-set: ## sets the apirest enviroment file to build the container
 apirest-create: ## creates the apirest container from Docker image
 	cd platforms/$(APIREST_PLTF) && $(MAKE) build up
 
-apirest-network: ## creates the apirest container network - execute this recipe first before others
+apirest-network: ## recreates the apirest container with specified network
 	$(MAKE) apirest-stop
-	cd platforms/$(APIREST_PLTF) && $(DOCKER_COMPOSE) -f docker-compose.yml -f docker-compose.network.yml up -d
+	cd platforms/$(APIREST_PLTF) && $(MAKE) network
+
+apirest-host-gateway: ## recreates the apirest container with docker internal host-gateway with local machine
+	$(MAKE) apirest-stop
+	cd platforms/$(APIREST_PLTF) && $(MAKE) host-gateway
 
 apirest-ssh: ## enters the apirest container shell
 	cd platforms/$(APIREST_PLTF) && $(MAKE) ssh
