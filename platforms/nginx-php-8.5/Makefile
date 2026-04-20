@@ -155,6 +155,9 @@ dev: ## sets a development enviroment
 network:
 	cd docker && $(DOCKER_COMPOSE) -f docker-compose.yml -f docker-compose.network.yml up -d
 
+host-gateway:
+	cd docker && $(DOCKER_COMPOSE) -f docker-compose.yml -f docker-compose.host-gateway.yml up -d
+
 # -------------------------------------------------------------------------------------------------
 #  Supervisord services management
 # -------------------------------------------------------------------------------------------------
