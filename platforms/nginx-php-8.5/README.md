@@ -3,20 +3,52 @@
 # NGINX + PHP 8.5
 
 - [./back](../../README.md)
+- [Container Specifications](#specifications)
 - [Container Installation](#container)
 - [Container Management](#management)
 <br>
+
+## <a id="specifications"></a>Container Specifications
+
+### ⚠️ Research & Testing Repository
+
+This repository is intended for **research and testing purposes only**. It is not suitable for production use without significant security review and modifications.
+
+### Security Considerations
+
+To maintain security best practices, we recommend never adding `Dockerfile` to your `.gitignore`. This approach helps prevent:
+
+- **Unauthorized package injection**: Malicious or unvetted packages could be added to the Dockerfile without detection during $ git status checks
+
+- **Supply chain risks**: Dependencies introduced without team visibility or approval
+
+- **Inconsistent deployment**: Preventing teams from being forced to use a single distribution, which can mask environment-specific vulnerabilities
+
+### Recommendations for Production Use
+
+Before using containers from this repository in any production environment:
+
+- **Security audit** all Dockerfile configurations
+
+- **Review all dependencies** and base images
+
+- **Implement image scanning** in your CI/CD pipeline
+
+- **Establish approval workflows** for Dockerfile changes
+
+- **Document** any modifications made for your specific use case
+<br><br>
 
 ## <a id="container"></a>Container Installation
 
 Before building the container:
 
-- If no GO app is on `./apirest` *(Or your custom binded directory)*, It would be better to copy the example on it.
+- If no PHP app is on `./apirest` *(Or your custom binded directory)*, It would be better to copy the example on it.
 - set the required configuration files by copinf and updating them depending on your project in:
 
 ### Dockerfile
 
-You might be using this repository with different databases connection. Copy from sample and set the correct packages and modules required by commenting them out, and others not required is recommended to be commented. In this way, the container will be built only with the neccessary settings an in less time
+You might be using this repository with different databases connection. Copy from Alpine or Debian samples and set the correct packages and modules required by commenting them out, and others not required is recommended to be commented. In this way, the container will be built only with the neccessary settings an in less time
 
 - `./docker/Dockerfile.sample` -> `./docker/Dockerfile`
 

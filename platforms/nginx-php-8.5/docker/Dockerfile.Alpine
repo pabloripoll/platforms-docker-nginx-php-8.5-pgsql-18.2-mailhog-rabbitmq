@@ -1,5 +1,4 @@
 ## Sources to build the container
-FROM alpine:3.23
 FROM php:8.5-fpm-alpine
 
 ARG UID
